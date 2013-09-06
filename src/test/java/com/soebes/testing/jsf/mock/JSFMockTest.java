@@ -63,6 +63,7 @@ public class JSFMockTest {
 		Map<String, Object> map = mock(Map.class);
 		when(map.get("formatString")).thenReturn("false");
 		when(map.get("maxLenght")).thenReturn(null);
+		when(map.get("errorText")).thenReturn(null);
 		
 		when(ui.getAttributes()).thenReturn(map);
 
