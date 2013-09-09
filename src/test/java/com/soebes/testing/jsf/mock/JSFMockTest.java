@@ -38,25 +38,24 @@ public class JSFMockTest {
 	 @Captor ArgumentCaptor<FacesMessage> stringCaptor = ArgumentCaptor.forClass(FacesMessage.class);
 	 
 	@Test
-	public void accessTest() {
+	public void shouldReturnErrorMessageWithWrongInputValue() {
 		FacesContext fc = mock(FacesContext.class);
-		String value = "Test";
 
 		UIInput element = mock(UIInput.class);
 		doNothing().when(element).setValid(false);
 		
 		when(element.getClientId(fc)).thenReturn("THIS");
-
-		Map<Object, Object> map = new HashMap<Object, Object>();
-		when(fc.getAttributes()).thenReturn(map);
+		when(fc.getAttributes()).thenReturn(new HashMap<Object, Object>());
 		
 
+		String value = "Test";
 		Object result = t.getAsObject(fc, element, value);
 
 		assertThat(result).isNull();
 
 		verify(fc).addMessage(eq("THIS"), stringCaptor.capture());
-		System.out.println("Hallo hier bin ich: " + stringCaptor.getValue().getSummary());
+
+		assertThat(stringCaptor.getValue().getSummary()).isEqualTo("Gültigen ganzzahligen Wert erfassen. (Ungültige Zeichen verwendet)");
 	}
 
 	@Test
