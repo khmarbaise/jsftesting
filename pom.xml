@@ -14,45 +14,44 @@
   <artifactId>jsfmock</artifactId>
   <version>0.1-SNAPSHOT</version>
 
-
   <properties>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
   <scm>
-    <developerConnection>scm:git:git@github.com:khmarbaise/sapm.git</developerConnection>
-    <connection>scm:git:git://github.com/khmarbaise/sapm.git</connection>
-    <url>https://github.com/khmarbaise/sapm</url>
+    <developerConnection>scm:git:git@github.com:khmarbaise/jsftesting.git</developerConnection>
+    <connection>scm:git:git@github.com:khmarbaise/jsftesting.git</connection>
+    <url>https://github.com/khmarbaise/jsftesting</url>
   </scm>
 
   <dependencies>
     <dependency>
-        <groupId>com.sun.faces</groupId>
-        <artifactId>jsf-api</artifactId>
-        <version>2.2.0</version>
-        <scope>provided</scope>
+      <groupId>com.sun.faces</groupId>
+      <artifactId>jsf-api</artifactId>
+      <version>2.2.0</version>
+      <scope>provided</scope>
     </dependency>
-
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
       <scope>test</scope>
     </dependency>
-
     <dependency>
-        <groupId>org.easytesting</groupId>
-        <artifactId>fest-assert</artifactId>
+      <groupId>org.easytesting</groupId>
+      <artifactId>fest-assert</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
-        <groupId>org.mockito</groupId>
-        <artifactId>mockito-core</artifactId>
-        <version>1.9.5</version>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>1.9.5</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
-    	<groupId>javax.el</groupId>
-    	<artifactId>el-api</artifactId>
-    	<version>2.2.1-b04</version>
+      <groupId>javax.el</groupId>
+      <artifactId>el-api</artifactId>
+      <version>2.2.1-b04</version>
     </dependency>
   </dependencies>
 

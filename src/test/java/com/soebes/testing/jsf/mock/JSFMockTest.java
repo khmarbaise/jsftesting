@@ -35,27 +35,24 @@ public class JSFMockTest {
 		t = new BCIntegerConverter();
 	}
 
-	 @Captor ArgumentCaptor<FacesMessage> stringCaptor = ArgumentCaptor.forClass(FacesMessage.class);
+	@Captor ArgumentCaptor<FacesMessage> stringCaptor = ArgumentCaptor.forClass(FacesMessage.class);
 	 
 	@Test
 	public void shouldReturnErrorMessageWithWrongInputValue() {
 		FacesContext fc = mock(FacesContext.class);
-
 		UIInput element = mock(UIInput.class);
+
 		doNothing().when(element).setValid(false);
-		
 		when(element.getClientId(fc)).thenReturn("THIS");
 		when(fc.getAttributes()).thenReturn(new HashMap<Object, Object>());
-		
 
 		String value = "Test";
 		Object result = t.getAsObject(fc, element, value);
-
-		assertThat(result).isNull();
-
 		verify(fc).addMessage(eq("THIS"), stringCaptor.capture());
 
+		assertThat(result).isNull();
 		assertThat(stringCaptor.getValue().getSummary()).isEqualTo("Gültigen ganzzahligen Wert erfassen. (Ungültige Zeichen verwendet)");
+		assertThat(stringCaptor.getValue().getSeverity()).isEqualTo(FacesMessage.SEVERITY_ERROR);
 	}
 
 	@Test
