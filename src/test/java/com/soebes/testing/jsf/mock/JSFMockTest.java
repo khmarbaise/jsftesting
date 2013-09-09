@@ -4,16 +4,22 @@
 package com.soebes.testing.jsf.mock;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.HashMap;
 import java.util.Map;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -29,6 +35,8 @@ public class JSFMockTest {
 		t = new BCIntegerConverter();
 	}
 
+	 @Captor ArgumentCaptor<FacesMessage> stringCaptor = ArgumentCaptor.forClass(FacesMessage.class);
+	 
 	@Test
 	public void accessTest() {
 		FacesContext fc = mock(FacesContext.class);
@@ -38,20 +46,17 @@ public class JSFMockTest {
 		doNothing().when(element).setValid(false);
 		
 		when(element.getClientId(fc)).thenReturn("THIS");
-//		List<FacesMessage> messageList = new ArrayList<FacesMessage>();
-		
-		// when(fc.addMessage(element.getClientId(fc),new
-		// FacesMessage(FacesMessage.SEVERITY_ERROR, getDefaultFehlertext(ui) +
-		// " (" + value + ")", "")));
 
-		// when(fc.addMessage("xx", )).
-		// when(fc.get)
-		Object result = t.getAsObject(fc, element, value);
-		assertThat(fc.getMessages()).isNotEmpty();
-		assertThat(fc.getMessageList()).isNotEmpty();
-		assertThat(fc.getMessageList().size()).isEqualTo(1);
+		Map<Object, Object> map = new HashMap<Object, Object>();
+		when(fc.getAttributes()).thenReturn(map);
 		
-		assertThat(result).isNotNull();
+
+		Object result = t.getAsObject(fc, element, value);
+
+		assertThat(result).isNull();
+
+		verify(fc).addMessage(eq("THIS"), stringCaptor.capture());
+		System.out.println("Hallo hier bin ich: " + stringCaptor.getValue().getSummary());
 	}
 
 	@Test

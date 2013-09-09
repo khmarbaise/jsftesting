@@ -10,16 +10,13 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 
 /**
- * Dieser Konverter wandelt einen Integer um. 
- * Optionale Attribute: - maxLength
+ * Dieser Konverter wandelt einen Integer um. Optionale Attribute: - maxLength
  * gibt die maximal erlaubte Länge des Integers an. - formatString = true
  * bedeutet, dass der String mit Tausendertrennzeichen ausgegeben wird. -
  * errorText gibt den Fehlertext an
  */
 public class BCIntegerConverter implements Converter {
-	/**
-	 * Konstanten für Fehlertexte
-	 */
+
 	private static final String ERROR_UNGUELTIGE_ZEICHEN = "Ungültige Zeichen verwendet";
 	private static final String ERROR_WERT_ZU_GROSS = "Wert zu groß";
 
@@ -31,7 +28,6 @@ public class BCIntegerConverter implements Converter {
 	}
 
 	private Object parseString(String _eingabe, UIComponent _component) {
-		// Eingabe in Stringbuffer umwandeln
 		StringBuffer sb = new StringBuffer(_eingabe.trim());
 
 		// Führende Nullen, Leerzeichen und Punkte aus Eingabe entfernen
@@ -75,7 +71,6 @@ public class BCIntegerConverter implements Converter {
 		if ((eingabe.length() == 0))
 			return null;
 
-		// Eingabe aus GUI prüfen
 		Object obj = parseString(eingabe, _component);
 
 		if (obj instanceof String) {
