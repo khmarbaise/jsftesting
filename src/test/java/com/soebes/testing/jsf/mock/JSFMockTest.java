@@ -29,28 +29,45 @@ import org.testng.annotations.Test;
  */
 public class JSFMockTest {
 	private BCIntegerConverter t;
+	private FacesContext facesContext;
+	private UIComponent uiComponent;
 
 	@BeforeMethod
 	public void beforeMethod() {
 		t = new BCIntegerConverter();
+		facesContext = null;
+		uiComponent = null;
 	}
 
-	@Captor ArgumentCaptor<FacesMessage> stringCaptor = ArgumentCaptor.forClass(FacesMessage.class);
+	private UIComponent setupConfigurationMapWithFormatting(String formatting) {
+		UIComponent ui = mock(UIComponent.class);
+		
+		@SuppressWarnings("unchecked")
+		Map<String, Object> map = mock(Map.class);
+		when(map.get("maxLength")).thenReturn(null);
+		when(map.get("errorText")).thenReturn(null);
+		when(map.get("formatString")).thenReturn(formatting);
+		
+		when(ui.getAttributes()).thenReturn(map);
+		return ui;
+	}
+	
+	private @Captor ArgumentCaptor<FacesMessage> stringCaptor = ArgumentCaptor.forClass(FacesMessage.class);
 	 
 	@Test
 	public void shouldReturnErrorMessageWithWrongInputValue() {
 		final String clientIdForFC = "THIS";
 
-		FacesContext fc = mock(FacesContext.class);
-		when(fc.getAttributes()).thenReturn(new HashMap<Object, Object>());
+		facesContext = mock(FacesContext.class);
+		when(facesContext.getAttributes()).thenReturn(new HashMap<Object, Object>());
 
 		UIInput element = mock(UIInput.class);
 		doNothing().when(element).setValid(false);
-		when(element.getClientId(fc)).thenReturn(clientIdForFC);
+		when(element.getClientId(facesContext)).thenReturn(clientIdForFC);
 
 		String value = "Test";
-		Object result = t.getAsObject(fc, element, value);
-		verify(fc).addMessage(eq(clientIdForFC), stringCaptor.capture());
+		Object result = t.getAsObject(facesContext, element, value);
+		verify(facesContext).addMessage(eq(clientIdForFC), stringCaptor.capture());
 
 		assertThat(result).isNull();
 		assertThat(stringCaptor.getValue().getSummary()).isEqualTo("Gültigen ganzzahligen Wert erfassen. (Ungültige Zeichen verwendet)");
@@ -58,76 +75,70 @@ public class JSFMockTest {
 	}
 
 	@Test
-	public void shouldReturnTheInputString() {
-		FacesContext fc = null;
-		UIComponent ui = mock(UIComponent.class);
-
-		@SuppressWarnings("unchecked")
-		Map<String, Object> map = mock(Map.class);
-		when(map.get("formatString")).thenReturn("false");
-		when(map.get("maxLenght")).thenReturn(null);
-		when(map.get("errorText")).thenReturn(null);
-		
-		when(ui.getAttributes()).thenReturn(map);
+	public void shouldReturnTheInputStringWithFormattingNull() {
+		UIComponent ui = setupConfigurationMapWithFormatting(null);
 
 		Integer integer = new Integer("12345");
 
-		Object result = t.getAsString(fc, ui, integer);
+		Object result = t.getAsString(facesContext, ui, integer);
 		assertThat(result).isEqualTo("12345");
 	}
 
 	@Test
-	public void shouldReturnTheFormattedInputString() {
-		FacesContext fc = null;
-		UIComponent ui = mock(UIComponent.class);
-
-		@SuppressWarnings("unchecked")
-		Map<String, Object> map = mock(Map.class);
-		when(map.get("formatString")).thenReturn("true");
-		when(map.get("maxLenght")).thenReturn(null);
-		when(map.get("errorText")).thenReturn(null);
-
-		when(ui.getAttributes()).thenReturn(map);
+	public void shouldReturnTheInputStringWithFormattingFalse() {
+		UIComponent ui = setupConfigurationMapWithFormatting("false");
 
 		Integer integer = new Integer("12345");
 
-		Object result = t.getAsString(fc, ui, integer);
+		Object result = t.getAsString(facesContext, ui, integer);
+		assertThat(result).isEqualTo("12345");
+	}
+
+	@Test
+	public void shouldReturnTheFormattedInputStringWithFormattingTrue() {
+		uiComponent = setupConfigurationMapWithFormatting("true");
+
+		Integer integer = new Integer("12345");
+
+		Object result = t.getAsString(facesContext, uiComponent, integer);
 		assertThat(result).isEqualTo("12.345");
 	}
 
 	@Test
+	public void shouldReturnTheFormattedInputStringWith100000() {
+		uiComponent = setupConfigurationMapWithFormatting("true");
+
+		Integer integer = new Integer("123456");
+
+		Object result = t.getAsString(facesContext, uiComponent, integer);
+		assertThat(result).isEqualTo("123.456");
+	}
+
+	@Test
 	public void shouldReturnNullWithNullValue() {
-		FacesContext fc = null;
-		UIComponent ui = null;
 		String value = null;
-		Object result = t.getAsObject(fc, ui, value);
+		Object result = t.getAsObject(facesContext, uiComponent, value);
 		assertThat(result).isNull();
 	}
 
 	@Test
 	public void shouldReturnNullWithSpacesInValue() {
-		FacesContext fc = null;
-		UIComponent ui = null;
 		String value = "   ";
-		Object result = t.getAsObject(fc, ui, value);
+		Object result = t.getAsObject(facesContext, uiComponent, value);
 		assertThat(result).isNull();
 	}
 
 	@Test
 	public void shouldReturnNullWithEmptyStringInValue() {
-		FacesContext fc = null;
-		UIComponent ui = null;
 		String value = "";
-		Object result = t.getAsObject(fc, ui, value);
+		Object result = t.getAsObject(facesContext, uiComponent, value);
 		assertThat(result).isNull();
 	}
 
 	@Test
 	public void shouldReturnNullWithTabsInValue() {
-		FacesContext fc = null;
-		UIComponent ui = null;
 		String value = "\t";
-		Object result = t.getAsObject(fc, ui, value);
+		Object result = t.getAsObject(facesContext, uiComponent, value);
 		assertThat(result).isNull();
 	}
 }
