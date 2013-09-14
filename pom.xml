@@ -17,6 +17,8 @@
   <properties>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven-site-plugin.version>3.3</maven-site-plugin.version>
+    <maven-project-info-reports-plugin.version>2.2</maven-project-info-reports-plugin.version>
   </properties>
 
   <scm>
