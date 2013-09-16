@@ -72,6 +72,8 @@ public class JSFMockTest {
 		assertThat(result).isNull();
 		assertThat(stringCaptor.getValue().getSummary()).isEqualTo("Gültigen ganzzahligen Wert erfassen. (Ungültige Zeichen verwendet)");
 		assertThat(stringCaptor.getValue().getSeverity()).isEqualTo(FacesMessage.SEVERITY_ERROR);
+		//@TODO: The detail is really set to "" instead of null. This should be checked in the real code.
+		assertThat(stringCaptor.getValue().getDetail()).isEqualTo("");
 	}
 
 	@Test
