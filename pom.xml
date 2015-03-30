@@ -7,7 +7,7 @@
   <parent>
     <groupId>com.soebes.smpp</groupId>
     <artifactId>smpp</artifactId>
-    <version>0.7.0</version>
+    <version>0.8.0</version>
   </parent>
 
   <groupId>com.soebes.testing.jsf.mock</groupId>
@@ -15,8 +15,6 @@
   <version>0.1-SNAPSHOT</version>
 
   <properties>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven-site-plugin.version>3.3</maven-site-plugin.version>
     <maven-project-info-reports-plugin.version>2.2</maven-project-info-reports-plugin.version>
   </properties>
@@ -40,8 +38,9 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.easytesting</groupId>
-      <artifactId>fest-assert</artifactId>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>1.7.1</version>
       <scope>test</scope>
     </dependency>
     <dependency>

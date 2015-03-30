@@ -1,50 +1,52 @@
 package com.soebes.testing.jsf.mock;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.testng.annotations.Test;
 
-public class BooleanTest {
+public class BooleanTest
+{
 
     @Test
-    public void firstTest() {
-        String value = "true";
-        Boolean bool = Boolean.valueOf(value);
-        assertThat(bool).isTrue();
+    public void firstTest()
+    {
+        Boolean bool = Boolean.valueOf( "true" );
+        assertThat( bool ).isTrue();
     }
 
     @Test
-    public void shouldReturnTrueWithTrailingSpacedValue() {
-        String value = " true ";
-        Boolean bool = Boolean.valueOf(value);
-        assertThat(bool).isFalse();
+    public void shouldReturnTrueWithTrailingSpacedValue()
+    {
+        Boolean bool = Boolean.valueOf( " true " );
+        assertThat( bool ).isFalse();
     }
 
     @Test
-    public void secondTest() {
-        String value = "false";
-        Boolean bool = Boolean.valueOf(value);
-        assertThat(bool).isFalse();
+    public void secondTest()
+    {
+        Boolean bool = Boolean.valueOf( "false" );
+        assertThat( bool ).isFalse();
     }
 
     @Test
-    public void shouldReturnFalseFromANullValue() {
-        String value = null;
-        Boolean bool = Boolean.valueOf(value);
-        assertThat(bool).isFalse();
-    }
-    @Test
-    public void shouldReturnFalseFromAnEmptyValue() {
-        String value = "";
-        Boolean bool = Boolean.valueOf(value);
-        assertThat(bool).isFalse();
+    public void shouldReturnFalseFromANullValue()
+    {
+        Boolean bool = Boolean.valueOf( null );
+        assertThat( bool ).isFalse();
     }
 
     @Test
-    public void shouldReturnTrueFromATrueValueInDifferentCase() {
-        String value = "True";
-        Boolean bool = Boolean.valueOf(value);
-        assertThat(bool).isTrue();
+    public void shouldReturnFalseFromAnEmptyValue()
+    {
+        Boolean bool = Boolean.valueOf( "" );
+        assertThat( bool ).isFalse();
+    }
+
+    @Test
+    public void shouldReturnTrueFromATrueValueInDifferentCase()
+    {
+        Boolean bool = Boolean.valueOf( "True" );
+        assertThat( bool ).isTrue();
     }
 
 }
